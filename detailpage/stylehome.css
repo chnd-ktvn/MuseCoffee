@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.flex-container header{
+    font-family: "Rubik", cursive;
+    margin: 10px auto;
+    width: 90%;
+    height: 80px;
+    display: flex;
+    position: sticky;
+}
+hr{
+    border-bottom: 1px solid #6A4029;
+}
+header .header-logo{
+    flex: 3;
+    color: #0B132A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+header .header-logo h1{
+    margin-top: 10px;
+    padding-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+header .header-menu{
+    flex: 7;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.header-menu ul a{
+    text-decoration: none;
+    padding: 0 10px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #4F5665;
+    align-items: center;
+    justify-content: center;
+}
+a .ul-active{
+    color: #6A4029;
+    font-weight: bold;
+}
+header .header-account{
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}    
+.header-account .chat-notif{
+    position: relative;
+    z-index: 1;
+    padding: 5px;
+} 
+.header-account img{
+    height: 20px;
+}
+.header-account .ellipse{
+    height: 10px;
+    z-index: 1;
+    position: absolute;
+    left: 0;
+}
+.header-account .girl-img{
+    border-radius: 100%;
+}
+.flex-container main{
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    width: 90%;
+    padding: 20px 0 40px 0;
+}
+main aside{
+    flex: 3;
+    justify-content: center;
+    border-right: 1px solid #6A4029;
+}
+main aside h1{
+    color: #6A4029;
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
+    padding-top: 10px;
+}
+main aside p{
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    font-size: 12px;
+}
+main aside .coupon{
+    height: 550px;
+}
+.coupon .box{
+    z-index: 1;
+    position: relative;
+    padding: 10px;
+}
+.coupon .box-1{
+    background-color: #895537;
+    position: absolute;
+    border-radius: 20px;
+    width: 89%;
+    top: 40px;
+    height: 400px;
+}
+.coupon .box-2{
+    background-color:black;
+    position: absolute;
+    width: 40px;
+    border-radius: 20px;
+    width: 85%;
+    height: 450px;
+    top: 20px;
+}
+.coupon .box-3{
+    background-color: #FFCB65;
+    box-sizing: border-box;
+    position: absolute;
+    border-radius: 20px;
+    width: 80%;
+    padding: 20px 10px;
+    font-family: "Poppins", sans-serif;
+}
+.coupon .box-3 img{
+    border-radius: 100%;
+    object-fit: contain;
+    width: 100%;
+    padding: 0 20%;
+}
+.coupon .box-3 h3{
+    font-size: 100%;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 20px;
+}
+.coupon .box-3 .buy{
+    font-size: 14px;
+    color: black;
+    border-bottom: 1px dashed black;
+}
+.coupon .box-3 .coupon-code{
+    font-size: 16px;
+    color: black;
+}
+.coupon .box-3 .coupon-cd{
+    font-size: 100%;
+    color: black;
+    font-weight: bold;
+}
+.coupon .box-3 .valid{
+    font-size: 12px;
+    color: black;
+    bottom: 0;
+}
+main article{
+    flex: 7;
+}
+main aside button{
+    background-color: #6A4029;
+    color: white;
+    border-color: silver;
+    font-size: 15px;
+    width: 80%;   
+    margin: 0 10px;
+    padding: 5px;
+    border-radius: 20px;
+}
+main aside section pre{
+    margin: auto;
+    font-size: 12px;
+    margin-top: 60px;
+}
+article .container nav{
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+article .container nav a{
+    color: #4F5665;
+}
+main article .container section{
+    margin: 0 auto;
+    box-sizing: border-box;
+}
+main article .container section .a{
+    box-sizing: border-box;
+    border-radius: 5%;
+    box-shadow: 2px 2px 2px 2px #4F5665;
+}
+main article .container section img{
+    border-radius: 100%;
+    object-fit: contain;
+    width: 100%;
+    padding: 10% 20%;
+}
+main article .container section p{
+    font-family: "Poppins", sans-serif;
+    font-weight: 900;
+    text-align: center;
+}
+.flex-container footer{
+    margin: 0 auto;
+    display: flex;
+    padding: 40px 0;
+    background-color: blanchedalmond;
+    font-family: "Rubik", cursive;
+}
+footer .footer-des{
+    flex: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+footer .footer-des section{
+    display: flex;
+}
+.footer-des h1{
+    margin-top: 10px;
+    padding-left: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.footer-des p{
+    text-align: center;
+    margin: 0 40px;
+    padding: 20px 0;
+    font-weight: 500;
+    font-size: 16px;
+}
+.footer-des .img img{
+    padding-right: 10px;
+}
+footer .footer-product{
+    flex: 5;
+    display: flex;
+    margin-top: 10px;
+    color: whitesmoke;
+    align-items: flex-end;
+    flex-direction: column;
+}
+footer .footer-engage{
+    flex: 3;
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    flex-direction: column;
+}
+footer a{
+    color: black;
+    font-family: "Poppins", sans-serif;
+}
