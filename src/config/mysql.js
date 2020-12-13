@@ -3,15 +3,15 @@ const connection = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '',
-  database: 'coba',
+  database: 'muse_coffee',
   timezone: 'UTC'
 })
 connection.connect((error) => {
   if (error) {
-    console.log('Turn on the database!')
-    throw error
+    return console.log(`Turn on the database! 
+    ${error}`)
   } else {
-    console.log('You are now connected to database.')
+    return console.log('You are now connected to database.')
   }
 })
 module.exports = connection
