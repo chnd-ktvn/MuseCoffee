@@ -1,12 +1,29 @@
-# MuseCoffee
-You can visit my project in netlify: 
-https://muse-coffee.netlify.app/
+<h1 align="center">MuseCoffee</h1>
 
-Doc postman:
-https://documenter.getpostman.com/view/11233486/TVsoGqNy
+#background_projek. [More about Express](https://www.npmjs.com/package/express)
 
-And these are the screenshots:
+## Built With
 
-![Screenshot (143)](https://user-images.githubusercontent.com/53890286/101334494-890f2900-38aa-11eb-9855-3bba15713d32.png)
+[![Express.js](https://img.shields.io/badge/Express.js-4.x-orange.svg?style=rounded-square)](https://expressjs.com/en/starter/installing.html)
+[![Node.js](https://img.shields.io/badge/Node.js-v.12.13-green.svg?style=rounded-square)](https://nodejs.org/)
 
-![Screenshot (144)](https://user-images.githubusercontent.com/53890286/101334505-8d3b4680-38aa-11eb-809f-9c8e484713c4.png)
+## Requirements
+
+1. <a href="https://nodejs.org/en/download/">Node Js</a>
+2. Node_modules
+3. <a href="https://www.getpostman.com/">Postman</a>
+4. Web Server (ex. localhost)
+
+## How to run the app ?
+
+1. Open app's directory in CMD or Terminal
+2. Type `npm install`
+3. Turn on Web Server and MySQL can using Third-party tool like xampp, etc.
+4. Create a database with the name #nama_database, and Import file sql to **phpmyadmin**
+5. Open Postman desktop application or Chrome web app extension that has installed before
+6. Choose HTTP Method and enter request url.(ex. localhost:1010/)
+7. You can see all the end point [here](https://documenter.getpostman.com/view/11233486/TVsoGqNy)
+
+## License
+
+© [Chandra Oktaviani](https://github.com/chnd-ktvn/)
