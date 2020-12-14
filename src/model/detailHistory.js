@@ -1,8 +1,8 @@
 const connection = require('../config/mysql.js')
 module.exports = {
-  getHistory: () => {
+  getDetailHistory: () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM history', (error, result) => {
+      connection.query('SELECT * FROM detail_history', (error, result) => {
         if (!error) {
           resolve(result)
         } else {
@@ -11,12 +11,12 @@ module.exports = {
       })
     })
   },
-  postHistory: (setData) => {
+  postDetailHistory: (setData) => {
     return new Promise((resolve, reject) => {
-      connection.query('INSERT INTO history SET ?', setData, (error, result) => {
+      connection.query('INSERT INTO detail_history SET ?', setData, (error, result) => {
         if (!error) {
           const newResult = {
-            history_id: result.insertId, ...setData
+            detail_history_id: result.insertId, ...setData
           }
           resolve(newResult)
         } else {
@@ -25,9 +25,9 @@ module.exports = {
       })
     })
   },
-  deleteHistory: (id) => {
+  deleteDetailHistory: (id) => {
     return new Promise((resolve, reject) => {
-      connection.query('DELETE FROM history WHERE history_id=?', id, (error, result) => {
+      connection.query('DELETE FROM detail_history WHERE detail_history_id=?', id, (error, result) => {
         if (!error) {
           resolve(result)
         } else {

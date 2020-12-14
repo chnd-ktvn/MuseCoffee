@@ -1,11 +1,10 @@
-const { getProduct, getProductCount, getProductById, searchByName } = require('../model/product.js')
+const { getProduct, getProductCount, getProductById, searchByName, postProduct, patchProduct, deleteProduct } = require('../model/product.js')
 const helper = require('../helper/response.js')
 const qs = require('querystring')
 
 module.exports = {
   getProduct: async (request, response) => {
     try {
-      // const orderBy = request.params
       let { orderBy, page, limit } = request.query
       page = parseInt(page)
       limit = parseInt(limit)
@@ -53,16 +52,71 @@ module.exports = {
     try {
       const { name } = request.params
       const result = await searchByName(name)
-      // if (result.length > 0) {
-      return helper.response(response, 200, 'Success Get Product By Name', result)
-      // } else {
-      //   return helper.response(response, 404, `Product By name ${name} is Not Found`)
-      // }
-      // result.forEach(r => {
-      //   return helper.response(response, 200, 'Success Search Product By Name', r)
-      // })
+      if (result.length > 0) {
+        return helper.response(response, 200, 'Success Search By Name', result)
+      } else {
+        return helper.response(response, 404, `Product By ${name} is Not Found`)
+      }
     } catch (error) {
-      console.log(`${error}error dicontoller search`)
+      return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
+  postProduct: async (request, response) => {
+    try {
+      const {
+        category_id,
+        product_name,
+        product_price,
+        product_status
+      } = request.body
+      const setData = {
+        category_id,
+        product_name,
+        product_price,
+        product_created_at: new Date(),
+        product_status
+      }
+      const result = await postProduct(setData)
+      return helper.response(response, 200, 'Success Post Product', result)
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
+  patchProduct: async (request, response) => {
+    try {
+      const { id } = request.params
+      const {
+        category_id,
+        product_name,
+        product_price,
+        product_status
+      } = request.body
+      const setData = {
+        category_id,
+        product_name,
+        product_price,
+        product_status
+      }
+      const checkId = await getProductById(id)
+      if (checkId.length > 0) {
+        const result = await patchProduct(setData, id)
+        return helper.response(response, 200, 'Success patch product by id', result)
+      }
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
+  deleteProduct: async (request, response) => {
+    try {
+      const { id } = request.params
+      const result = await deleteProduct(id)
+      if (result.length > 0) {
+        return helper.response(response, 200, 'Success Get Product By Id', result)
+      } else {
+        return helper.response(response, 404, `Product By Id : ${id} Not Found`)
+      }
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request', error)
     }
   }
 }
