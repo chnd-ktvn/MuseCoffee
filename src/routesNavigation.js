@@ -1,4 +1,6 @@
 const router = require('express').Router()
+
+const user = require('./routes/user.js')
 const product = require('./routes/product.js')
 const category = require('./routes/category')
 const coupon = require('./routes/coupon.js')
@@ -6,6 +8,7 @@ const history = require('./routes/history.js')
 const detailHistory = require('./routes/detailHistory.js')
 const size = require('./routes/size.js')
 
+router.use('/user', user)
 router.use('/product', product)
 router.use('/category', category)
 router.use('/coupon', coupon)

@@ -10,6 +10,7 @@ module.exports = {
       return helper.response(response, 400, 'Bad Request', error)
     }
   },
+  // ["250", "300", "500"]
   postCoupon: async (request, response) => {
     try {
       const {

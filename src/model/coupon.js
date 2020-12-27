@@ -2,7 +2,7 @@ const connection = require('../config/mysql.js')
 module.exports = {
   getCoupon: () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT coupon_id, product_name, coupon_code, coupon_disc, coupon_created_at FROM coupon JOIN product ON coupon.product_id=product.product_id WHERE coupon_status = 1', (error, result) => {
+      connection.query('SELECT coupon.product_id, product_name, product_photo,coupon.coupon_id, coupon_code, coupon_disc, coupon_detail, coupon_background_color, coupon_created_at, coupon_updated_at, coupon_status FROM coupon JOIN product ON coupon.product_id=product.product_id WHERE coupon_status = 1', (error, result) => {
         if (!error) {
           resolve(result)
         } else {
