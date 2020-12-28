@@ -7,18 +7,25 @@ require('dotenv').config()
 module.exports = {
   registerUser: async (request, response) => {
     try {
-      // console.log(request.body)
-      const { user_name, user_email, user_password } = request.body
+      const { user_name, user_email, user_password, user_phone_number, user_first_name, user_last_name, user_delivery_address, user_date_birth, user_gender } = request.body
       const salt = bcrypt.genSaltSync(10)
-
       const encryptPassword = bcrypt.hashSync(user_password, salt)
-
-      // console.log(encryptPassword)
       const setData = {
-        user_name, user_email, user_password: encryptPassword, user_created_at: new Date()
+        user_name,
+        user_email,
+        user_role: 1, // 1, 2, 3
+        user_password: encryptPassword,
+        user_phone_number,
+        user_first_name,
+        user_last_name,
+        photo: request.file === undefined ? '' : request.file.filename,
+        user_delivery_address,
+        user_date_birth,
+        user_gender,
+        user_created_at: new Date().toLocaleString(),
+        user_status: 1
       }
       const result = await registerUser(setData)
-      // console.log(result)
       return helper.response(response, 200, 'Success Register', result)
     } catch (error) {
       return helper.response(response, 400, 'Failed register')
@@ -26,26 +33,11 @@ module.exports = {
   },
   loginUser: async (request, response) => {
     try {
-      // user_password
       const { user_email, user_password } = request.body
       const checkDataUser = await checkEmail(user_email)
-      // saat check email terpanggil maka model checkemail akan mengambil data dari db user_id, user_email, user_password dan disimpan di checkdatauser
-      // 1.proses penngecekan apakah email ada di db atau tidak kan login bisa berkali kali masukin emainya, cek aja pw nya, kalo ga ada itu bisa register
-      // 2 pengecekan password
-
-      // pastinya ga kosong sih, []
       if (checkDataUser.length > 0) {
-        // kalo 0 register
-        // const checkedPass
-        // console.log(checkDataUser.length)
-        // karena harusnya pengecekna itu yang ada di db hanya ada indeks 0 kan harusnya 1 emailnya
-
-        // ini compare password yang dimasukkan dengan password yang ada di db
         const checkPassword = bcrypt.compareSync(user_password, checkDataUser[0].user_password)
-        // const salt = bcrypt.genSaltSync(10)
-        // const encryptPassword = bcrypt.hashSync(user_password, salt)
-        // console.log(encryptPassword)
-        console.log(checkPassword) // didni benrilai true atau false
+        console.log(checkPassword)
         if (checkPassword) {
           const { user_id, user_name, user_email, user_role } = checkDataUser[0]
           if (user_role === 1) {
@@ -72,7 +64,7 @@ module.exports = {
         return helper.response(response, 400, "You haven't registered yet!")
       }
     } catch (error) {
-      return helper.response(response, 400, 'Badd you wanna try?')
+      return helper.response(response, 400, 'Bad Request!')
     }
   }
 }

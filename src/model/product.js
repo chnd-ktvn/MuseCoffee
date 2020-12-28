@@ -3,7 +3,7 @@ module.exports = {
   getProduct: (orderBy, limit, offset) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT product_id, category_name, product_name, product_photo, product_price, product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_created_at, product_updated_at, product_status FROM product JOIN category ON product.category_id=category.category_id WHERE product_status=1 ORDER BY ${orderBy} ASC LIMIT ${limit} OFFSET ${offset}`,
+        `SELECT product_id, category_name, product_name, photo, product_price, product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_created_at, product_updated_at, product_status FROM product JOIN category ON product.category_id=category.category_id WHERE product_status=1 ORDER BY ${orderBy} ASC LIMIT ${limit} OFFSET ${offset}`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -17,7 +17,7 @@ module.exports = {
   getProductById: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT product.product_id, product_name, category_name, coupon_code, product_price, product_photo, product_size, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_detail, product_created_at, product_updated_at FROM product INNER JOIN category USING (category_id) LEFT JOIN coupon USING (coupon_id) WHERE product_status=1 AND product.product_id=${id}`,
+        `SELECT product.product_id, product_name, category_name, coupon_code, product_price, photo, product_size, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_detail, product_created_at, product_updated_at FROM product INNER JOIN category USING (category_id) LEFT JOIN coupon USING (coupon_id) WHERE product_status=1 AND product.product_id=${id}`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -31,7 +31,7 @@ module.exports = {
   getProductByCategory: (categoryId, orderBy, limit, offset) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT product_id, category_name, product_name, product_photo, product_price, product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_created_at, product_updated_at, product_status FROM product JOIN category ON product.category_id=category.category_id WHERE product_status=1 AND category.category_id=${categoryId} ORDER BY ${orderBy} ASC LIMIT ${limit} OFFSET ${offset}`,
+        `SELECT product_id, category_name, product_name, photo, product_price, product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_created_at, product_updated_at, product_status FROM product JOIN category ON product.category_id=category.category_id WHERE product_status=1 AND category.category_id=${categoryId} ORDER BY ${orderBy} ASC LIMIT ${limit} OFFSET ${offset}`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -45,7 +45,7 @@ module.exports = {
   searchByName: (name, orderBy, limit, offset) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT product_id, category_name, product_name, product_photo, product_price,product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_created_at, product_updated_at, product_status FROM product JOIN category ON product.category_id=category.category_id WHERE product_status=1 AND product_name LIKE '%${name}%' ORDER BY ${orderBy} ASC LIMIT ${limit} OFFSET ${offset}`,
+        `SELECT product_id, category_name, product_name, photo, product_price,product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_created_at, product_updated_at, product_status FROM product JOIN category ON product.category_id=category.category_id WHERE product_status=1 AND product_name LIKE '%${name}%' ORDER BY ${orderBy} ASC LIMIT ${limit} OFFSET ${offset}`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -112,7 +112,7 @@ module.exports = {
   getPhotoProduct: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT product_photo AS photo FROM product WHERE product_id=${id}`,
+        `SELECT photo AS photo FROM product WHERE product_id=${id}`,
         (error, result) => {
           if (!error) {
             resolve(result[0].photo)

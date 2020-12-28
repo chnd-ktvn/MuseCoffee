@@ -19,7 +19,7 @@ const fileFilter = (req, file, cb) => {
 const limits = {
   fileSize: 2 * 1024 * 1024 // 2MB
 }
-const upload = multer({ storage, fileFilter, limits }).single('product_photo')
+const upload = multer({ storage, fileFilter, limits }).single('photo')
 const uploadImage = async (req, res, next) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {

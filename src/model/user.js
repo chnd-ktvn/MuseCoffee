@@ -1,5 +1,4 @@
 const connection = require('../config/mysql.js')
-
 module.exports = {
   registerUser: (setData) => {
     return new Promise((resolve, reject) => {
@@ -19,7 +18,7 @@ module.exports = {
   },
   checkEmail: (email) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT user_id, user_email, user_password FROM user WHERE user_email = ?', email, (error, result) => {
+      connection.query('SELECT user_id, user_email, user_role, user_password FROM user WHERE user_email = ?', email, (error, result) => {
         if (!error) {
           resolve(result)
         } else {

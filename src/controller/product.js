@@ -188,7 +188,7 @@ module.exports = {
       const setData = {
         category_id,
         product_name,
-        product_photo: request.file === undefined ? '' : request.file.filename,
+        photo: request.file === undefined ? '' : request.file.filename,
         product_price,
         product_size,
         product_detail,
@@ -217,7 +217,7 @@ module.exports = {
         const setData = {
           category_id,
           product_name,
-          product_photo: request.file === undefined ? '' : request.file.filename,
+          photo: request.file === undefined ? '' : request.file.filename,
           product_price,
           product_size,
           product_detail,
@@ -253,7 +253,7 @@ module.exports = {
       const { id } = request.params
       const checkId = await getProductId(id)
       const setData = {
-        product_photo: '',
+        photo: '',
         product_status: 0,
         product_deleted_at: new Date().toLocaleString()
       }
