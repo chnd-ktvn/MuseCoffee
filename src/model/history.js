@@ -72,7 +72,6 @@ module.exports = {
         // ini yan gpertama
         // SELECT SUM(history_subtotal) AS total_price FROM history WHERE DAY(history_created_at) = DAY(NOW()) GROUP BY DAY (history_created_at)
         // ini yang kedua
-        // 
         console.log(id)
         resolve(id)
       } else {

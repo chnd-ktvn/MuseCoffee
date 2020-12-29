@@ -40,21 +40,20 @@ module.exports = {
         const checkPassword = bcrypt.compareSync(user_password, checkDataUser[0].user_password)
         if (checkPassword) {
           const { user_id, user_name, user_email, user_role } = checkDataUser[0]
-          if (user_role === 1) {
-            const payload = {
-              user_id, user_name, user_email, user_role
-            }
-            const token = jwt.sign(payload, process.env.ACCESS_USER, { expiresIn: '1h' })
-            const result = { ...payload, token }
-            return helper.response(response, 200, 'Success Login', result)
-          } else {
-            const payload = {
-              user_id, user_name, user_email, user_role
-            }
-            const token = jwt.sign(payload, process.env.ACCESS_ADMIN, { expiresIn: '1h' })
-            const result = { ...payload, token }
-            return helper.response(response, 200, 'Success Login!', result)
+          // if (user_role === 1) {
+          const payload = {
+            user_id, user_name, user_email, user_role
           }
+          const token = jwt.sign(payload, process.env.ACCESS_USER, { expiresIn: '1h' })
+          const result = { ...payload, token }
+          return helper.response(response, 200, 'Success Login', result)
+          // } else {
+          //   const payload = {
+          //     user_id, user_name, user_email, user_role
+          //   }
+          //   const token = jwt.sign(payload, process.env.ACCESS_ADMIN, { expiresIn: '1h' })
+          //   const result = { ...payload, token }
+          //   return helper.response(response, 200, 'Success Login!', result)
         } else {
           return helper.response(response, 400, 'Wrong Password!')
         }

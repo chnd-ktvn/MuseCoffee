@@ -37,15 +37,20 @@ module.exports = {
   },
   deleteHistory: async (request, response) => {
     try {
-      const userId = await getUserId()
+      // const userId = await getUserId()
       // const userId = isAdmin()
+
+
+      console.log(request.token.user_id + 'qqqqq')
       const { id } = request.params
-      console.log(userId + 'berhasil tidak ya')
+      // console.log(userId + 'berhasil tidak ya')
       const checkId = await getHistoryId(id)
       const setData = {
         history_checked: 0,
         history_checked_at: new Date()
       }
+
+
       if (checkId.length > 0) {
         await deleteHistory(setData, id)
         return helper.response(response, 200, 'Success Delete Data')
