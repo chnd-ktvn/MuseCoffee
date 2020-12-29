@@ -4,9 +4,13 @@ const {
   getProduct,
   getProductCount,
   getProductById,
+  getProductByIdAdm,
   getProductByCategory,
+  getProductByCategoryAdm,
   getProductCountByCategory,
   getProductCountBySearchName,
+  getAllProducts,
+  getAllProductCount,
   searchByName,
   getPhotoProduct,
   getProductId,
@@ -60,12 +64,75 @@ module.exports = {
       return helper.response(response, 400, 'Bad Request', error)
     }
   },
+  getAllProducts: async (request, response) => {
+    try {
+      let { orderBy, page, limit } = request.query
+      page = parseInt(page)
+      limit = parseInt(limit)
+      const totalData = await getAllProductCount()
+      const totalPage = Math.ceil(totalData / limit)
+      const offset = page * limit - limit
+      const prevLink =
+        page > 1
+          ? qs.stringify({ ...request.query, ...{ page: page - 1 } })
+          : null
+      const nextLink =
+        page < totalPage
+          ? qs.stringify({ ...request.query, ...{ page: page + 1 } })
+          : null
+      const pageInfo = {
+        page,
+        totalPage,
+        limit,
+        totalData,
+        nextLink: nextLink && `http://localhost:${process.env.PORT}/product?${nextLink}`,
+        prevLink: prevLink && `https://localhost:${process.env.PORT}/product?${prevLink}`
+      }
+      const result = await getAllProducts(orderBy, limit, offset)
+      const newData = {
+        result, pageInfo
+      }
+      client.setex(`getproducts:${JSON.stringify(request.query)}`, 3600, JSON.stringify(newData)) // set data redis
+      return helper.response(
+        response,
+        200,
+        'Success Get All Products',
+        result,
+        pageInfo
+      )
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
   getProductById: async (request, response) => {
     try {
       const { id } = request.params
       const result = await getProductById(id)
       if (result.length > 0) {
         client.setex(`getproductbyid:${id}`, 3600, JSON.stringify(result)) // set data redis
+        return helper.response(
+          response,
+          200,
+          `Success Get Product By Id ${id}`,
+          result
+        )
+      } else {
+        return helper.response(
+          response,
+          404,
+          `Product By Id ${id} is Not Found`
+        )
+      }
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
+  getProductByIdAdm: async (request, response) => {
+    try {
+      const { id } = request.params
+      const result = await getProductByIdAdm(id)
+      if (result.length > 0) {
+        client.setex(`getproductbyidadm:${id}`, 3600, JSON.stringify(result)) // set data redis
         return helper.response(
           response,
           200,
@@ -120,6 +187,57 @@ module.exports = {
       }
       if (result.length) {
         client.setex(`getproductbycategory:${JSON.stringify(request.query)}`, 3600, JSON.stringify(newData)) // set data redis
+        return helper.response(
+          response,
+          200,
+            `Success Get Product By Category Id ${categoryId}`,
+            result,
+            pageInfo
+        )
+      } else {
+        return helper.response(response, 404, `Category Id ${categoryId} is Not Found`)
+      }
+    } catch (error) {
+      return helper.response(response, 400, 'Bad Request')
+    }
+  },
+  getProductByCategoryAdm: async (request, response) => {
+    try {
+      let { categoryId, orderBy, page, limit } = request.query
+      page = parseInt(page)
+      limit = parseInt(limit)
+      const totalData = await getProductCountByCategory(categoryId)
+      const totalPage = Math.ceil(totalData / limit)
+      const offset = page * limit - limit
+      const prevLink =
+        page > 1
+          ? qs.stringify({ ...request.query, ...{ page: page - 1 } })
+          : null
+      const nextLink =
+        page < totalPage
+          ? qs.stringify({ ...request.query, ...{ page: page + 1 } })
+          : null
+      const pageInfo = {
+        page,
+        totalPage,
+        limit,
+        totalData,
+        nextLink:
+          nextLink && `http://localhost:${process.env.PORT}/product/category?${nextLink}`,
+        prevLink:
+          prevLink && `https://localhost:${process.env.PORT}/product/category?${prevLink}`
+      }
+      const result = await getProductByCategoryAdm(
+        categoryId,
+        orderBy,
+        limit,
+        offset
+      )
+      const newData = {
+        result, pageInfo
+      }
+      if (result.length) {
+        client.setex(`getproductbycategoryadm:${JSON.stringify(request.query)}`, 3600, JSON.stringify(newData)) // set data redis
         return helper.response(
           response,
           200,
@@ -230,7 +348,7 @@ module.exports = {
           product_status: 1
         }
         const photo = await getPhotoProduct(id)
-        fs.unlink(`./uploads/${photo}`, function (err) {
+        fs.unlink(`./uploads/product_photo/${photo}`, function (err) {
           if (err) console.log(err)
           console.log('File deleted')
         })
@@ -251,7 +369,7 @@ module.exports = {
   deleteProduct: async (request, response) => {
     try {
       const { id } = request.params
-      const checkId = await getProductId(id)
+      const checkId = await getProductById(id)
       const setData = {
         photo: '',
         product_status: 0,
@@ -259,7 +377,7 @@ module.exports = {
       }
       if (checkId.length > 0) {
         const photo = await getPhotoProduct(id)
-        fs.unlink(`./uploads/${photo}`, function (err) {
+        fs.unlink(`./uploads/product_photo/${photo}`, function (err) {
           if (err) console.log(err)
           console.log('File deleted')
         })

@@ -12,9 +12,29 @@ module.exports = {
       }
     })
   },
+  getAllProductsRedis: (request, response, next) => {
+    client.get(`getproducts:${JSON.stringify(request.query)}`, (error, result) => {
+      if (!error && result != null) {
+        const newResult = JSON.parse(result)
+        return helper.response(response, 200, 'Success Get All Products', newResult.result, newResult.pageInfo)
+      } else {
+        next()
+      }
+    })
+  },
   getProductByIdRedis: (request, response, next) => {
     const { id } = request.params
-    client.get(`getproductbyidredis:${id}`, (error, result) => {
+    client.get(`getproductbyid:${id}`, (error, result) => {
+      if (!error && result != null) {
+        return helper.response(response, 200, 'Success Get Product By Id', JSON.parse(result))
+      } else {
+        next()
+      }
+    })
+  },
+  getProductByIdAdmRedis: (request, response, next) => {
+    const { id } = request.params
+    client.get(`getproductbyidadm:${id}`, (error, result) => {
       if (!error && result != null) {
         return helper.response(response, 200, 'Success Get Product By Id', JSON.parse(result))
       } else {
@@ -24,6 +44,16 @@ module.exports = {
   },
   getProductByCategoryRedis: (request, response, next) => {
     client.get(`getproductbycategory:${JSON.stringify(request.query)}`, (error, result) => {
+      if (!error && result != null) {
+        const newResult = JSON.parse(result)
+        return helper.response(response, 200, 'Success Get Product By Category', newResult.result, newResult.pageInfo)
+      } else {
+        next()
+      }
+    })
+  },
+  getProductByCategoryAdmRedis: (request, response, next) => {
+    client.get(`getproductbycategoryadm:${JSON.stringify(request.query)}`, (error, result) => {
       if (!error && result != null) {
         const newResult = JSON.parse(result)
         return helper.response(response, 200, 'Success Get Product By Category', newResult.result, newResult.pageInfo)

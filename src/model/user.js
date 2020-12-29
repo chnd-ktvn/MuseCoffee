@@ -26,5 +26,49 @@ module.exports = {
         }
       })
     })
+  },
+  EditUserProfile: (setData, id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `UPDATE user SET ? WHERE user_id=${id}`,
+        setData,
+        (error, result) => {
+          if (!error) {
+            const newResult = {
+              user_id: id,
+              ...setData
+            }
+            resolve(newResult)
+          } else {
+            reject(new Error(error))
+          }
+        }
+      )
+    })
+  },
+  getUserId: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(`SELECT * FROM user WHERE user_id=${id}`, (error, result) => {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
+    })
+  },
+  getPhotoUser: (id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        `SELECT photo AS photo FROM user WHERE user_id=${id}`,
+        (error, result) => {
+          if (!error) {
+            resolve(result[0].photo)
+          } else {
+            reject(error)
+          }
+        }
+      )
+    })
   }
 }

@@ -1,10 +1,11 @@
-const { getHistory, postHistory, deleteHistory } = require('../model/history.js')
+const { getHistory, getInvoiceCount, getHistoryId, postHistory, deleteHistory, getUserId } = require('../model/history.js')
 const helper = require('../helper/response.js')
 
 module.exports = {
   getHistory: async (request, response) => {
     try {
       const result = await getHistory()
+      console.log(new Date().toLocaleTimeString()) // 2017-06-25
       return helper.response(response, 200, 'Success Get History', result)
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
@@ -12,18 +13,19 @@ module.exports = {
   },
   postHistory: async (request, response) => {
     try {
+      const total = await getInvoiceCount()
+      const totalIncrement = parseInt(total) + 1
       const {
-        history_invoice,
-        subtotal,
+        history_subtotal,
         payment_method,
-        status,
+        history_checked,
         user_id
       } = request.body
       const setData = {
-        history_invoice,
-        subtotal,
+        history_invoice: 'mc-' + totalIncrement,
+        history_subtotal,
         payment_method,
-        status,
+        history_checked,
         user_id,
         history_created_at: new Date()
       }
@@ -35,10 +37,18 @@ module.exports = {
   },
   deleteHistory: async (request, response) => {
     try {
+      const userId = await getUserId()
+      // const userId = isAdmin()
       const { id } = request.params
-      const result = await deleteHistory(id)
-      if (result.length > 0) {
-        return helper.response(response, 200, 'Success', result)
+      console.log(userId + 'berhasil tidak ya')
+      const checkId = await getHistoryId(id)
+      const setData = {
+        history_checked: 0,
+        history_checked_at: new Date()
+      }
+      if (checkId.length > 0) {
+        await deleteHistory(setData, id)
+        return helper.response(response, 200, 'Success Delete Data')
       } else {
         return helper.response(response, 404, `History By Id ${id} is Not Found`)
       }

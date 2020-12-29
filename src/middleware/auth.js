@@ -1,9 +1,9 @@
 const jwt = require('jsonwebtoken')
 const helper = require('../helper/response.js')
+const { getUserId } = require('../model/history')
 module.exports = {
   isUser: (request, response, next) => {
     let token = request.headers.authorization
-    console.log(token)
     if (token) {
       token = token.split(' ')[1]
       jwt.verify(token, process.env.ACCESS_USER, (error, result) => {
@@ -23,7 +23,6 @@ module.exports = {
   },
   isAdmin: (request, response, next) => {
     let token = request.headers.authorization
-    console.log(token)
     if (token) {
       token = token.split(' ')[1]
       jwt.verify(token, process.env.ACCESS_ADMIN, (error, result) => {
@@ -32,8 +31,10 @@ module.exports = {
           console.log(error)
           return helper.response(response, 400, error.message)
         } else {
-          // console.log(result)
-          // request.token = result
+          request.token = result
+          console.log(result.user_id)
+          getUserId(result.user_id)
+          // return result.user_id
           next()
         }
       })
