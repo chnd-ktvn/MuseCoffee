@@ -1,5 +1,5 @@
 const multer = require('multer')
-const { checkProductName, getProductId } = require('../model/product.js')
+const { getProductId } = require('../model/product.js')
 const helper = require('../helper/response')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,22 +21,14 @@ const limits = {
 }
 const upload = multer({ storage, fileFilter, limits }).single('photo')
 const uploadImage = async (req, res, next) => {
-  try {
-    const { product_name } = req.body
-    const checkName = await checkProductName(product_name)
-    if (checkName.length < 1) {
-      upload(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-          return helper.response(res, 400, err.message)
-        } else if (err) {
-          return helper.response(res, 400, err.message)
-        }
-        next()
-      })
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return helper.response(res, 400, err.message)
+    } else if (err) {
+      return helper.response(res, 400, err.message)
     }
-  } catch (error) {
-    return helper.response(res, 400, 'Product name has already existed!')
-  }
+    next()
+  })
 }
 const updateImage = async (req, res, next) => {
   const { id } = req.params

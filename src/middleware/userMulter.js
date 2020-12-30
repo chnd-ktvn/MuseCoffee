@@ -1,5 +1,5 @@
 const multer = require('multer')
-const { checkEmail, getUserId } = require('../model/user.js')
+const { getUserId } = require('../model/user.js')
 const helper = require('../helper/response')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -21,22 +21,14 @@ const limits = {
 }
 const upload = multer({ storage, fileFilter, limits }).single('photo')
 const uploadImage = async (req, res, next) => {
-  try {
-    const { user_email } = req.body
-    const checkDataUser = await checkEmail(user_email)
-    if (checkDataUser.length < 1) {
-      upload(req, res, function (err) {
-        if (err instanceof multer.MulterError) {
-          return helper.response(res, 400, err.message)
-        } else if (err) {
-          return helper.response(res, 400, err.message)
-        }
-        next()
-      })
+  upload(req, res, function (err) {
+    if (err instanceof multer.MulterError) {
+      return helper.response(res, 400, err.message)
+    } else if (err) {
+      return helper.response(res, 400, err.message)
     }
-  } catch (error) {
-    return helper.response(res, 400, 'Your email has been registered!')
-  }
+    next()
+  })
 }
 const updateImage = async (req, res, next) => {
   const { id } = req.params

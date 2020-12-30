@@ -54,7 +54,7 @@ module.exports = {
         return helper.response(response, 400, "You haven't registered yet!")
       }
     } catch (error) {
-      return helper.response(response, 400, 'Bad Request! disini?')
+      return helper.response(response, 400, 'Bad Request!')
     }
   },
   EditUserProfile: async (request, response) => {
