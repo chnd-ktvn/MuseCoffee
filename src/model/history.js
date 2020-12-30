@@ -2,9 +2,8 @@ const connection = require('../config/mysql.js')
 module.exports = {
   getHistory: () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT * FROM history', (error, result) => {
+      connection.query('SELECT history_id, history_invoice, history_subtotal,payment_method, history_checked, history_created_at, user_delivery_address, user_phone_number FROM history JOIN user ON history.user_id=user.user_id WHERE history_checked=1', (error, result) => {
         if (!error) {
-          // SELECT SUM(subtotal) AS total_price FROM history WHERE YEAR(history_created_at) = YEAR(NOW()) GROUP BY YEAR (history_created_at)
           resolve(result)
         } else {
           reject(error)
@@ -18,7 +17,7 @@ module.exports = {
         if (!error) {
           resolve(result)
         } else {
-          reject(error)
+          reject(new Error(error))
         }
       })
     })
@@ -26,7 +25,7 @@ module.exports = {
   getInvoiceCount: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT COUNT(*) AS total FROM history',
+        'SELECT COUNT(history_subtotal) AS total FROM history',
         (error, result) => {
           if (!error) {
             resolve(result[0].total)
@@ -62,21 +61,26 @@ module.exports = {
       })
     })
   },
-  getUserId: (id) => {
+  getTodayIncome: () => {
     return new Promise((resolve, reject) => {
-      if (id) {
-        // SELECT SUM(subtotal) AS total_price FROM history WHERE YEAR(history_created_at) = YEAR(NOW()) GROUP BY YEAR (history_created_at)
-
-        // ini yang ketiga
-        // SELECT SUM(history_subtotal) AS total_price FROM history WHERE YEAR(history_created_at) = YEAR(NOW()) GROUP BY YEAR (history_created_at)
-        // ini yan gpertama
-        // SELECT SUM(history_subtotal) AS total_price FROM history WHERE DAY(history_created_at) = DAY(NOW()) GROUP BY DAY (history_created_at)
-        // ini yang kedua
-        console.log(id)
-        resolve(id)
-      } else {
-        reject(new Error())
-      }
+      connection.query('SELECT SUM(history_subtotal) AS total_price  FROM history WHERE DATE(history_created_at) = DATE(NOW())', (error, result) => {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
+    })
+  },
+  getYearIncome: () => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT SUM(history_subtotal) AS total_price FROM history WHERE YEAR(history_checked_at) = YEAR(NOW()) GROUP BY YEAR (history_checked_at)', (error, result) => {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
     })
   }
 }

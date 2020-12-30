@@ -1,4 +1,6 @@
-const { getCoupon, getAllCoupons, postCoupon, getCouponById, getCouponByIdAdm, getCouponId, patchCoupon, deleteCoupon } = require('../model/coupon.js')
+const redis = require('redis')
+const client = redis.createClient()
+const { getCoupon, getAllCoupons, postCoupon, getCouponById, getCouponByIdAdm, getCouponId, checkCouponCode, patchCoupon, deleteCoupon } = require('../model/coupon.js')
 const helper = require('../helper/response.js')
 module.exports = {
   getCoupon: async (request, response) => {
@@ -6,6 +8,7 @@ module.exports = {
       const data = new Date()
       const result = await getCoupon(data)
       if (result.length > 0) {
+        client.setex('getcoupon', 3600, JSON.stringify(result)) // set data redis
         return helper.response(response, 200, 'Success Get Coupon', result)
       } else {
         return helper.response(response, 404, 'No data or Coupons are Invalid!')
@@ -19,6 +22,7 @@ module.exports = {
       const data = new Date()
       const result = await getAllCoupons(data)
       if (result.length > 0) {
+        client.setex('getcoupons', 3600, JSON.stringify(result))
         return helper.response(response, 200, 'Success Get Coupon', result)
       } else {
         return helper.response(response, 404, 'Coupons are invalid!')
@@ -32,19 +36,24 @@ module.exports = {
       const {
         product_id, coupon_code, coupon_disc, coupon_detail, coupon_background_color, coupon_valid_start, coupon_valid_end
       } = request.body
-      const setData = {
-        product_id,
-        coupon_code,
-        coupon_disc,
-        coupon_detail,
-        coupon_background_color,
-        coupon_valid_start,
-        coupon_valid_end,
-        coupon_created_at: new Date().toLocaleString(),
-        coupon_status: 1
+      const checkCode = await checkCouponCode(coupon_code)
+      if (checkCode.length < 1) {
+        const setData = {
+          product_id,
+          coupon_code,
+          coupon_disc,
+          coupon_detail,
+          coupon_background_color,
+          coupon_valid_start,
+          coupon_valid_end,
+          coupon_created_at: new Date().toLocaleString(),
+          coupon_status: 1
+        }
+        const result = await postCoupon(setData)
+        return helper.response(response, 200, 'Success Post Coupon', result)
+      } else {
+        return helper.response(response, 400, 'Coupon code has already existed!')
       }
-      const result = await postCoupon(setData)
-      return helper.response(response, 200, 'Success Post Coupon', result)
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
     }
@@ -56,6 +65,7 @@ module.exports = {
       console.log(date)
       const result = await getCouponById(date, id)
       if (result.length > 0) {
+        client.setex(`getcouponbyid:${id}`, 3600, JSON.stringify(result))
         return helper.response(response, 200, `Success Get Coupon By Id ${id}`, result)
       } else {
         return helper.response(response, 404, `Coupon By Id ${id} is Not Found or Invalid Coupon`)
@@ -71,6 +81,7 @@ module.exports = {
       console.log(date)
       const result = await getCouponByIdAdm(date, id)
       if (result.length > 0) {
+        client.setex(`getcouponbyidadm:${id}`, 3600, JSON.stringify(result))
         return helper.response(response, 200, `Success Get Coupon By Id ${id}`, result)
       } else {
         return helper.response(response, 404, `Coupon By Id ${id} is Not Found or Invalid Coupon`)

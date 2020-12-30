@@ -109,6 +109,17 @@ module.exports = {
       })
     })
   },
+  checkProductName: (product_name) => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT * FROM product WHERE product_name= ?', product_name, (error, result) => {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
+    })
+  },
   getProductCount: () => {
     return new Promise((resolve, reject) => {
       connection.query(

@@ -69,6 +69,17 @@ module.exports = {
       })
     })
   },
+  checkCouponCode: (code) => {
+    return new Promise((resolve, reject) => {
+      connection.query('SELECT * FROM coupon WHERE coupon_code= ?', code, (error, result) => {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
+    })
+  },
   patchCoupon: (setData, id) => {
     return new Promise((resolve, reject) => {
       connection.query(`UPDATE coupon SET ? WHERE coupon_id=${id}`, setData, (error, result) => {

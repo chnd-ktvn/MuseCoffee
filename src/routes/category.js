@@ -1,4 +1,5 @@
 const router = require('express').Router()
 const { getCategory } = require('../controller/category.js')
-router.get('/', getCategory)
+const { getCategoryRedis } = require('../middleware/redis')
+router.get('/', getCategoryRedis, getCategory)
 module.exports = router

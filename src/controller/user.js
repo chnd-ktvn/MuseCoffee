@@ -14,7 +14,7 @@ module.exports = {
       const setData = {
         user_name,
         user_email,
-        user_role: 1, // 1, 2, 3
+        user_role: 1,
         user_password: encryptPassword,
         user_phone_number,
         user_first_name,
@@ -37,23 +37,16 @@ module.exports = {
       const { user_email, user_password } = request.body
       const checkDataUser = await checkEmail(user_email)
       if (checkDataUser.length > 0) {
+        console.log(checkDataUser.length)
         const checkPassword = bcrypt.compareSync(user_password, checkDataUser[0].user_password)
         if (checkPassword) {
           const { user_id, user_name, user_email, user_role } = checkDataUser[0]
-          // if (user_role === 1) {
           const payload = {
             user_id, user_name, user_email, user_role
           }
-          const token = jwt.sign(payload, process.env.ACCESS_USER, { expiresIn: '1h' })
+          const token = jwt.sign(payload, process.env.ACCESS, { expiresIn: '1h' })
           const result = { ...payload, token }
           return helper.response(response, 200, 'Success Login', result)
-          // } else {
-          //   const payload = {
-          //     user_id, user_name, user_email, user_role
-          //   }
-          //   const token = jwt.sign(payload, process.env.ACCESS_ADMIN, { expiresIn: '1h' })
-          //   const result = { ...payload, token }
-          //   return helper.response(response, 200, 'Success Login!', result)
         } else {
           return helper.response(response, 400, 'Wrong Password!')
         }
@@ -61,7 +54,7 @@ module.exports = {
         return helper.response(response, 400, "You haven't registered yet!")
       }
     } catch (error) {
-      return helper.response(response, 400, 'Bad Request!')
+      return helper.response(response, 400, 'Bad Request! disini?')
     }
   },
   EditUserProfile: async (request, response) => {
@@ -75,7 +68,7 @@ module.exports = {
         const setData = {
           user_name,
           user_email,
-          user_role: 1, // 1, 2, 3
+          user_role: 1,
           user_password: encryptPassword,
           user_phone_number,
           user_first_name,

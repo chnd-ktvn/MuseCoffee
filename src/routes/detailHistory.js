@@ -1,8 +1,9 @@
 const router = require('express').Router()
-const { getDetailHistory, postDetailHistory, deleteDetailHistory } = require('../controller/detailhistory.js')
+const { getDetailHistory, postDetailHistory, deleteDetailHistory } = require('../controller/detailHistory.js')
+const { authorization, isUser } = require('../middleware/auth.js')
 
-router.get('/', getDetailHistory)
-router.post('/', postDetailHistory)
-router.delete('/:id', deleteDetailHistory)
+router.get('/', authorization, isUser, getDetailHistory)
+router.post('/', authorization, isUser, postDetailHistory)
+router.patch('/:id', authorization, isUser, deleteDetailHistory)
 
 module.exports = router

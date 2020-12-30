@@ -81,5 +81,65 @@ module.exports = {
       }
       next()
     })
+  },
+  getCouponRedis: (request, response, next) => {
+    client.get('getcoupon', (error, result) => {
+      if (!error && result != null) {
+        const newResult = JSON.parse(result)
+        return helper.response(response, 200, 'Success Get Coupons', newResult)
+      } else {
+        next()
+      }
+    })
+  },
+  getAllCouponsRedis: (request, response, next) => {
+    client.get('getcoupons', (error, result) => {
+      if (!error && result != null) {
+        const newResult = JSON.parse(result)
+        return helper.response(response, 200, 'Success Get All Coupons', newResult)
+      } else {
+        next()
+      }
+    })
+  },
+  getCouponByIdRedis: (request, response, next) => {
+    const { id } = request.params
+    client.get(`getcouponbyid:${id}`, (error, result) => {
+      if (!error && result != null) {
+        return helper.response(response, 200, 'Success Get Coupon By Id', JSON.parse(result))
+      } else {
+        next()
+      }
+    })
+  },
+  getCouponByIdAdmRedis: (request, response, next) => {
+    const { id } = request.params
+    client.get(`getcouponbyidadm:${id}`, (error, result) => {
+      if (!error && result != null) {
+        return helper.response(response, 200, 'Success Get Coupon By Id', JSON.parse(result))
+      } else {
+        next()
+      }
+    })
+  },
+  clearDataCouponRedis: (request, response, next) => {
+    client.keys('getcoupon*', (_error, result) => {
+      if (result.length > 0) {
+        result.forEach((value) => {
+          client.del(value)
+        })
+      }
+      next()
+    })
+  },
+  getCategoryRedis: (request, response, next) => {
+    client.get('getcoupon', (error, result) => {
+      if (!error && result != null) {
+        const newResult = JSON.parse(result)
+        return helper.response(response, 200, 'Success Get Category', newResult)
+      } else {
+        next()
+      }
+    })
   }
 }

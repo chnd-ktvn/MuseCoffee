@@ -1,9 +1,12 @@
-const { getDetailHistory, postDetailHistory, deleteDetailHistory } = require('../model/detailHistory.js')
+const { getDetailHistory, postDetailHistory, deleteDetailHistory, getHistoryDetailId } = require('../model/detailHistory.js')
 const helper = require('../helper/response.js')
 
 module.exports = {
   getDetailHistory: async (request, response) => {
     try {
+      const { id } = request.params
+      // const { id } = request.token.user_id
+      console.log(id)
       const result = await getDetailHistory()
       return helper.response(response, 200, 'Success Get Detail History', result)
     } catch (error) {
@@ -18,6 +21,7 @@ module.exports = {
         history_id
       } = request.body
       const setData = {
+        user_id: request.token.user_id,
         product_id,
         qty,
         history_id
@@ -31,9 +35,13 @@ module.exports = {
   deleteDetailHistory: async (request, response) => {
     try {
       const { id } = request.params
-      const result = await deleteDetailHistory(id)
-      if (result.length > 0) {
-        return helper.response(response, 200, 'Success', result)
+      const checkId = await getHistoryDetailId(id)
+      if (checkId.length > 0) {
+        const setData = {
+          status: 0
+        }
+        await deleteDetailHistory(setData, id)
+        return helper.response(response, 200, 'Success Delete Data')
       } else {
         return helper.response(response, 404, `Detail History By Id ${id} is Not Found`)
       }
