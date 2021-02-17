@@ -45,7 +45,7 @@ module.exports = {
   getProductByIdAdm: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT product.product_id, product_name, category_name, coupon_code, product_price, photo, product_size, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_detail, product_created_at, product_updated_at, product_status FROM product INNER JOIN category USING (category_id) LEFT JOIN coupon USING (coupon_id) WHERE product.product_id=${id}`,
+        `SELECT product.product_id, product_name, category_id,category_name, coupon_code, product_price, photo, product_size, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_detail, product_created_at, product_updated_at, product_status FROM product INNER JOIN category USING (category_id) LEFT JOIN coupon USING (coupon_id) WHERE product.product_id=${id}`,
         (error, result) => {
           if (!error) {
             resolve(result)
@@ -84,11 +84,11 @@ module.exports = {
       )
     })
   },
-  searchByName: (name, orderBy, limit, offset) => {
+  searchByName: (name, orderBy, limit, offset) => { // categoryId,
     return new Promise((resolve, reject) => {
       connection.query(
         `SELECT product_id, category_name, product_name, photo, product_price,product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_created_at, product_updated_at, product_status FROM product JOIN category ON product.category_id=category.category_id WHERE product_status=1 AND product_name LIKE '%${name}%' ORDER BY ${orderBy} ASC LIMIT ${limit} OFFSET ${offset}`,
-        (error, result) => {
+        (error, result) => { //   AND category.category_id=${categoryId}
           if (!error) {
             resolve(result)
           } else {
@@ -163,10 +163,10 @@ module.exports = {
     })
   },
   getProductCountBySearchName: (name) => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => { //  categoryId,
       connection.query(
         `SELECT COUNT(*) AS total FROM product WHERE product_status=1 AND product_name LIKE '%${name}%'`,
-        (error, result) => {
+        (error, result) => { // AND category_id=?
           if (!error) {
             resolve(result[0].total)
           } else {

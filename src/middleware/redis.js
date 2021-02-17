@@ -133,7 +133,7 @@ module.exports = {
     })
   },
   getCategoryRedis: (request, response, next) => {
-    client.get('getcoupon', (error, result) => {
+    client.get('getcategory', (error, result) => {
       if (!error && result != null) {
         const newResult = JSON.parse(result)
         return helper.response(response, 200, 'Success Get Category', newResult)

@@ -9,14 +9,14 @@ module.exports = {
         if ((error && error.name === 'JsonWebTokenError') || (error && error.name === 'TokenExpiredError')
         ) {
           console.log(error)
-          return helper.response(response, 400, error.message)
+          return helper.response(response, 403, error.message)
         } else {
           request.token = result
           next()
         }
       })
     } else {
-      return helper.response(response, 400, 'Please Login First!')
+      return helper.response(response, 403, 'Please Login First!')
     }
   },
   isAdmin: (request, response, next) => {

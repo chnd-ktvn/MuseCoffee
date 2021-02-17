@@ -62,7 +62,6 @@ module.exports = {
     try {
       const { id } = request.params
       const date = new Date()
-      console.log(date)
       const result = await getCouponById(date, id)
       if (result.length > 0) {
         client.setex(`getcouponbyid:${id}`, 3600, JSON.stringify(result))
@@ -78,7 +77,6 @@ module.exports = {
     try {
       const { id } = request.params
       const date = new Date()
-      console.log(date)
       const result = await getCouponByIdAdm(date, id)
       if (result.length > 0) {
         client.setex(`getcouponbyidadm:${id}`, 3600, JSON.stringify(result))

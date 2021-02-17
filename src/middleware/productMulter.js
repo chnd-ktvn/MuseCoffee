@@ -3,6 +3,7 @@ const { getProductId } = require('../model/product.js')
 const helper = require('../helper/response')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    console.log(file)
     cb(null, './uploads/product_photo')
   },
   filename: function (req, file, cb) {

@@ -8,7 +8,7 @@ module.exports = {
             user_id: result.insertId,
             ...setData
           }
-          delete newResult.user_pasword
+          delete newResult.user_password
           resolve(newResult)
         } else {
           reject(new Error(error))
@@ -18,7 +18,7 @@ module.exports = {
   },
   checkEmail: (email) => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT user_id, user_name, user_email, user_password, user_role FROM user WHERE user_email = ? ', email, (error, result) => {
+      connection.query('SELECT user_id, user_name, user_email, user_password, user_role, photo, user_activation FROM user WHERE user_email = ? ', email, (error, result) => {
         if (!error) {
           resolve(result)
         } else {

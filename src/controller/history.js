@@ -21,9 +21,8 @@ module.exports = {
   getOrders: async (request, response) => {
     try {
       const today = new Date()
-      const result = await getInvoiceCount()
       console.log(today)
-      console.log(result)
+      const result = await getInvoiceCount()
       return helper.response(response, 200, 'Success Get Today Income', result)
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
@@ -34,7 +33,6 @@ module.exports = {
       const today = new Date()
       const result = await getYearIncome()
       console.log(today)
-      console.log(result)
       return helper.response(response, 200, 'Success Get Today Income', result)
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)

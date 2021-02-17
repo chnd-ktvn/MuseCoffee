@@ -85,8 +85,8 @@ module.exports = {
         totalPage,
         limit,
         totalData,
-        nextLink: nextLink && `http://localhost:${process.env.PORT}/product?${nextLink}`,
-        prevLink: prevLink && `https://localhost:${process.env.PORT}/product?${prevLink}`
+        nextLink: nextLink && `http://localhost:${process.env.PORT}/product/all/?${nextLink}`,
+        prevLink: prevLink && `https://localhost:${process.env.PORT}/product/all/?${prevLink}`
       }
       const result = await getAllProducts(orderBy, limit, offset)
       const newData = {
@@ -110,6 +110,7 @@ module.exports = {
       const result = await getProductById(id)
       if (result.length > 0) {
         client.setex(`getproductbyid:${id}`, 3600, JSON.stringify(result)) // set data redis
+
         return helper.response(
           response,
           200,
@@ -223,9 +224,9 @@ module.exports = {
         limit,
         totalData,
         nextLink:
-          nextLink && `http://localhost:${process.env.PORT}/product/category?${nextLink}`,
+          nextLink && `http://localhost:${process.env.PORT}/product/category/adm/?${nextLink}`,
         prevLink:
-          prevLink && `https://localhost:${process.env.PORT}/product/category?${prevLink}`
+          prevLink && `https://localhost:${process.env.PORT}/product/category/adm/?${prevLink}`
       }
       const result = await getProductByCategoryAdm(
         categoryId,
@@ -241,7 +242,7 @@ module.exports = {
         return helper.response(
           response,
           200,
-            `Success Get Product By Category Id ${categoryId}`,
+            `Success Get Productsss By Category Id ${categoryId}`,
             result,
             pageInfo
         )
@@ -254,10 +255,11 @@ module.exports = {
   },
   searchByName: async (request, response) => {
     try {
-      let { name, orderBy, page, limit } = request.query
+      let { name, orderBy, page, limit } = request.query // categoryId
+      // categoryId = parseInt(categoryId)
       page = parseInt(page)
       limit = parseInt(limit)
-      const totalData = await getProductCountBySearchName(name)
+      const totalData = await getProductCountBySearchName(name) // categoryId,
       const totalPage = Math.ceil(totalData / limit)
       const offset = page * limit - limit
       const prevLink =
@@ -301,22 +303,28 @@ module.exports = {
   postProduct: async (request, response) => {
     try {
       const {
-        category_id, product_name, product_price, product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food
+        category_id, product_name, product_price, product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods
       } = request.body
+      // product_size = product_size.split(',')
+      // delivery_methods = delivery_methods.split(',')
+      // product_size.forEach(el => {
+      //   product_size.push(el)
+      // })
+      // is_food
       const setData = {
-        category_id,
+        category_id: parseInt(category_id),
         product_name,
         photo: request.file === undefined ? '' : request.file.filename,
-        product_price,
+        product_price: parseInt(product_price),
         product_size,
         product_detail,
         start_delivery_hour,
         end_delivery_hour,
-        stock_product,
+        stock_product: parseInt(stock_product),
         delivery_methods,
-        is_food,
         product_created_at: new Date().toLocaleString(),
         product_status: 1
+
       }
       const result = await postProduct(setData)
       return helper.response(response, 200, 'Success Post Product', result)

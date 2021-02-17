@@ -7,6 +7,8 @@ require('dotenv').config()
 
 const app = express()
 app.use(morgan('dev'))
+app.use(express.static('uploads/product_photo'))
+app.use(express.static('uploads/user_photo'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
