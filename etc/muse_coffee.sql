@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 17 Feb 2021 pada 13.02
+-- Waktu pembuatan: 17 Feb 2021 pada 22.17
 -- Versi server: 10.4.17-MariaDB
 -- Versi PHP: 8.0.1
 
@@ -31,7 +31,6 @@ CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
   `category_name` varchar(30) NOT NULL,
   `category_created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `category_updated_at` datetime NOT NULL,
   `category_status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
@@ -39,12 +38,12 @@ CREATE TABLE `category` (
 -- Dumping data untuk tabel `category`
 --
 
-INSERT INTO `category` (`category_id`, `category_name`, `category_created_at`, `category_updated_at`, `category_status`) VALUES
-(1, 'Favorite Product', '2021-02-15 20:07:29', '0000-00-00 00:00:00', 1),
-(2, 'Coffee', '2021-02-15 20:07:29', '0000-00-00 00:00:00', 1),
-(3, 'Non Coffee', '2021-02-15 20:09:15', '0000-00-00 00:00:00', 1),
-(4, 'Foods', '2021-02-15 20:09:15', '0000-00-00 00:00:00', 1),
-(5, 'Add-on', '2021-02-15 20:09:53', '0000-00-00 00:00:00', 1);
+INSERT INTO `category` (`category_id`, `category_name`, `category_created_at`, `category_status`) VALUES
+(1, 'Favorite Product', '2021-02-15 20:07:29', 1),
+(2, 'Coffee', '2021-02-15 20:07:29', 1),
+(3, 'Non Coffee', '2021-02-15 20:09:15', 1),
+(4, 'Foods', '2021-02-15 20:09:15', 1),
+(5, 'Add-on', '2021-02-15 20:09:53', 1);
 
 -- --------------------------------------------------------
 
