@@ -7,8 +7,10 @@ require('dotenv').config()
 
 const app = express()
 app.use(morgan('dev'))
-app.use(express.static('uploads/product_photo'))
-app.use(express.static('uploads/user_photo'))
+app.use('/api1/fileuploads', express.static('uploads'))
+app.use(express.static('uploads'))
+// app.use(express.static('uploads/product_photo'))
+// app.use(express.static('uploads/user_photo'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cors())
@@ -18,7 +20,7 @@ app.use((request, response, next) => {
   response.header('Access-Control-Allow-Headers', 'Content-Type')
   next()
 })
-app.use('/', routeNav)
+app.use('/api1', routeNav)
 
 app.get('*', (request, response) => {
   response.status(404).send('Path not found')
