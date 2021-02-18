@@ -5,7 +5,7 @@ module.exports = {
     let token = request.headers.authorization
     if (token) {
       token = token.split(' ')[1]
-      jwt.verify(token, process.env.ACCESS, (error, result) => {
+      jwt.verify(token, 'ACCESS', (error, result) => {
         if ((error && error.name === 'JsonWebTokenError') || (error && error.name === 'TokenExpiredError')
         ) {
           console.log(error)

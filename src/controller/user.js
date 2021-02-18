@@ -79,7 +79,7 @@ module.exports = {
             const payload = {
               user_id, user_name, user_email, user_role, photo
             }
-            const token = jwt.sign(payload, process.env.ACCESS, { expiresIn: '1h' })
+            const token = jwt.sign(payload, 'ACCESS', { expiresIn: '1h' })
             const result = { ...payload, token }
             return helper.response(response, 200, 'Success Login!', result)
           } else {
