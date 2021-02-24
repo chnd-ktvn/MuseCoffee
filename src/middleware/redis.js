@@ -82,6 +82,16 @@ module.exports = {
       next()
     })
   },
+  clearAllDataRedis: (request, response, next) => {
+    client.keys('get*', (_error, result) => {
+      if (result.length > 0) {
+        result.forEach((value) => {
+          client.del(value)
+        })
+      }
+      next()
+    })
+  },
   getCouponRedis: (request, response, next) => {
     client.get('getcoupon', (error, result) => {
       if (!error && result != null) {

@@ -31,7 +31,7 @@ module.exports = {
   getProductById: (id) => {
     return new Promise((resolve, reject) => {
       connection.query(
-        `SELECT product.product_id, product_name, category_name, coupon_code, product_price, photo, product_size, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_detail, product_created_at, product_updated_at FROM product INNER JOIN category USING (category_id) LEFT JOIN coupon USING (coupon_id) WHERE product_status=1 AND product.product_id=${id}`,
+        `SELECT product.product_id, product_name,category_id, category_name, coupon_code, product_price, photo, product_size, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food, product_detail, product_created_at, product_updated_at FROM product INNER JOIN category USING (category_id) LEFT JOIN coupon USING (coupon_id) WHERE product_status=1 AND product.product_id=${id}`,
         (error, result) => {
           if (!error) {
             resolve(result)

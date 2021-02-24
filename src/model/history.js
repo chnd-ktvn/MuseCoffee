@@ -2,7 +2,29 @@ const connection = require('../config/mysql.js')
 module.exports = {
   getHistory: () => {
     return new Promise((resolve, reject) => {
-      connection.query('SELECT history_id, history_invoice, history_subtotal,payment_method, history_checked, history_created_at, user_delivery_address, user_phone_number FROM history JOIN user ON history.user_id=user.user_id WHERE history_checked=1', (error, result) => {
+      connection.query('SELECT * FROM history', (error, result) => {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
+    })
+  },
+  getHistoryByIdUser: (user_id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(`SELECT * FROM history WHERE history_deleted=0 AND user_id=${user_id}`, (error, result) => {
+        if (!error) {
+          resolve(result)
+        } else {
+          reject(error)
+        }
+      })
+    })
+  },
+  getHistoryUserById: (user_id, id) => {
+    return new Promise((resolve, reject) => {
+      connection.query(`SELECT * FROM history WHERE history_deleted=0 AND user_id=${user_id} AND history_id=${id}`, (error, result) => {
         if (!error) {
           resolve(result)
         } else {
@@ -25,7 +47,7 @@ module.exports = {
   getInvoiceCount: () => {
     return new Promise((resolve, reject) => {
       connection.query(
-        'SELECT COUNT(history_subtotal) AS total FROM history',
+        'SELECT COUNT(history_total) AS total FROM history',
         (error, result) => {
           if (!error) {
             resolve(result[0].total)
@@ -39,6 +61,7 @@ module.exports = {
   postHistory: (setData) => {
     return new Promise((resolve, reject) => {
       connection.query('INSERT INTO history SET ?', setData, (error, result) => {
+        console.log(error)
         if (!error) {
           const newResult = {
             history_id: result.insertId, ...setData

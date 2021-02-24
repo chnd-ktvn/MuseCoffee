@@ -5,7 +5,6 @@ module.exports = {
   getDetailHistory: async (request, response) => {
     try {
       const { id } = request.params
-      // const { id } = request.token.user_id
       console.log(id)
       const result = await getDetailHistory()
       return helper.response(response, 200, 'Success Get Detail History', result)
@@ -15,19 +14,32 @@ module.exports = {
   },
   postDetailHistory: async (request, response) => {
     try {
-      const {
-        product_id,
-        qty,
-        history_id
-      } = request.body
-      const setData = {
-        user_id: request.token.user_id,
-        product_id,
-        qty,
-        history_id
+      const detail = request.body
+      let result
+      for (let i = 0; i < detail.length; i++) {
+        const {
+          user_id,
+          product_id,
+          qty,
+          photo,
+          product_name,
+          product_price,
+          history_id
+        } = detail[i]
+
+        const setData = {
+          user_id,
+          product_id,
+          qty,
+          photo,
+          product_name,
+          product_price,
+          history_id
+        }
+        console.log(setData)
+        result = await postDetailHistory(setData)
       }
-      const result = await postDetailHistory(setData)
-      return helper.response(response, 200, 'Success Post Detail History', result)
+      return helper.response(response, 200, 'Your order will be processed.', result)
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
     }

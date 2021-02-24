@@ -48,7 +48,8 @@ module.exports = {
             html: `<div style="font-family: cursive; font-size: 20px;">
             <h4>Hey, it's nice to see you. I am Faith from Muse Coffee.</h4>
 
-            <p>I am here to send you the access link to Muse Coffee. Please, click <a href="https://vigorous-wright-316484.netlify.app/activate/${userId}">this</a> to activate your account.</p>
+            <p>I am here to send you the access link to Muse Coffee. Please, click <a href="https://musecoffee-net.netlify.app/activate/${userId}">this</a> to activate your account.</p>
+            
             
             <p>Happy Shopping!</p></div>`
           }

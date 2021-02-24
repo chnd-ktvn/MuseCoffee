@@ -1,8 +1,9 @@
 const connection = require('../config/mysql.js')
 module.exports = {
   getDetailHistory: () => {
+    // SELECT detail_history_id, qty, status, product_name, product_price FROM detail_history LEFT JOIN history USING (history_id) LEFT JOIN product USING (product_id)
     return new Promise((resolve, reject) => {
-      connection.query('SELECT detail_history_id, qty, status, product_name, product_price FROM detail_history LEFT JOIN history USING (history_id) LEFT JOIN product USING (product_id)', (error, result) => {
+      connection.query('SELECT * FROM detail_history', (error, result) => {
         if (!error) {
           resolve(result)
         } else {
@@ -25,9 +26,9 @@ module.exports = {
       })
     })
   },
-  getHistoryDetailId: (id) => {
+  getDetailHistoryId: (id) => {
     return new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM detail_history WHERE status = 1 AND detail_history_id=${id}`, (error, result) => {
+      connection.query(`SELECT * FROM detail_history WHERE history_id=${id}`, (error, result) => {
         if (!error) {
           resolve(result)
         } else {

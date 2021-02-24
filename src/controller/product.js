@@ -46,7 +46,7 @@ module.exports = {
         limit,
         totalData,
         nextLink: nextLink && `http://localhost:${process.env.PORT}/product?${nextLink}`,
-        prevLink: prevLink && `https://localhost:${process.env.PORT}/product?${prevLink}`
+        prevLink: prevLink && `http://localhost:${process.env.PORT}/product?${prevLink}`
       }
       const result = await getProduct(orderBy, limit, offset)
       const newData = {
@@ -86,7 +86,7 @@ module.exports = {
         limit,
         totalData,
         nextLink: nextLink && `http://localhost:${process.env.PORT}/product/all/?${nextLink}`,
-        prevLink: prevLink && `https://localhost:${process.env.PORT}/product/all/?${prevLink}`
+        prevLink: prevLink && `http://localhost:${process.env.PORT}/product/all/?${prevLink}`
       }
       const result = await getAllProducts(orderBy, limit, offset)
       const newData = {
@@ -175,7 +175,7 @@ module.exports = {
         nextLink:
           nextLink && `http://localhost:${process.env.PORT}/product/category?${nextLink}`,
         prevLink:
-          prevLink && `https://localhost:${process.env.PORT}/product/category?${prevLink}`
+          prevLink && `http://localhost:${process.env.PORT}/product/category?${prevLink}`
       }
       const result = await getProductByCategory(
         categoryId,
@@ -226,7 +226,7 @@ module.exports = {
         nextLink:
           nextLink && `http://localhost:${process.env.PORT}/product/category/adm/?${nextLink}`,
         prevLink:
-          prevLink && `https://localhost:${process.env.PORT}/product/category/adm/?${prevLink}`
+          prevLink && `http://localhost:${process.env.PORT}/product/category/adm/?${prevLink}`
       }
       const result = await getProductByCategoryAdm(
         categoryId,
@@ -278,7 +278,7 @@ module.exports = {
         nextLink:
           nextLink && `http://localhost:${process.env.PORT}/product/searchByName?${nextLink}`,
         prevLink:
-          prevLink && `https://localhost:${process.env.PORT}/product/searchByName?${prevLink}`
+          prevLink && `http://localhost:${process.env.PORT}/product/searchByName?${prevLink}`
       }
       const result = await searchByName(name, orderBy, limit, offset)
       const newData = {
@@ -305,12 +305,6 @@ module.exports = {
       const {
         category_id, product_name, product_price, product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods
       } = request.body
-      // product_size = product_size.split(',')
-      // delivery_methods = delivery_methods.split(',')
-      // product_size.forEach(el => {
-      //   product_size.push(el)
-      // })
-      // is_food
       const setData = {
         category_id: parseInt(category_id),
         product_name,
@@ -339,11 +333,12 @@ module.exports = {
         category_id, product_name, product_price, product_size, product_detail, start_delivery_hour, end_delivery_hour, stock_product, delivery_methods, is_food
       } = request.body
       const checkId = await getProductId(id)
+      const photo = await getPhotoProduct(id)
       if (checkId.length > 0) {
         const setData = {
           category_id,
           product_name,
-          photo: request.file === undefined ? '' : request.file.filename,
+          photo: request.file === undefined ? photo : request.file.filename,
           product_price,
           product_size,
           product_detail,
@@ -355,11 +350,15 @@ module.exports = {
           product_updated_at: new Date().toLocaleString(),
           product_status: 1
         }
-        const photo = await getPhotoProduct(id)
-        fs.unlink(`./uploads/product_photo/${photo}`, function (err) {
-          if (err) console.log(err)
-          console.log('File deleted')
-        })
+        console.log(setData.photo + 'disini kosong')
+        // const photo = await getPhotoProduct(id)
+        console.log(photo)
+        if (setData.photo !== photo) {
+          fs.unlink(`./uploads/product_photo/${photo}`, function (err) {
+            if (err) console.log(err)
+            console.log('File deleted')
+          })
+        }
         const result = await patchProduct(setData, id)
         return helper.response(
           response,
