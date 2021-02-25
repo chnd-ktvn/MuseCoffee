@@ -29,6 +29,7 @@ module.exports = {
           user_status: 1,
           user_activation: 'off'
         }
+        console.log(setData.user_date_birth)
         const result = await registerUser(setData)
         const userId = result.user_id
         if (userId !== null) {
