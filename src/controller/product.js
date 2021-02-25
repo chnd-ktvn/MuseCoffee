@@ -1,4 +1,5 @@
 const redis = require('redis')
+const moment = require('moment')
 const client = redis.createClient()
 const {
   getProduct,
@@ -316,7 +317,7 @@ module.exports = {
         end_delivery_hour,
         stock_product: parseInt(stock_product),
         delivery_methods,
-        product_created_at: new Date().toLocaleString(),
+        product_created_at: moment().format(),
         product_status: 1
 
       }
@@ -348,7 +349,7 @@ module.exports = {
           stock_product,
           delivery_methods,
           is_food,
-          product_updated_at: new Date().toLocaleString(),
+          product_updated_at: moment().format(),
           product_status: 1
         }
         console.log(setData.photo + 'disini kosong')
@@ -381,7 +382,7 @@ module.exports = {
       const setData = {
         photo: '',
         product_status: 0,
-        product_deleted_at: new Date().toLocaleString()
+        product_deleted_at: moment().format()
       }
       if (checkId.length > 0) {
         const photo = await getPhotoProduct(id)

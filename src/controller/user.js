@@ -145,7 +145,7 @@ module.exports = {
           user_delivery_address,
           user_date_birth,
           user_gender,
-          user_updated_at: new Date().toLocaleString(),
+          user_updated_at: moment().format(),
           user_status: 1
         }
         const photo = await getPhotoUser(id)
