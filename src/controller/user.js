@@ -64,6 +64,7 @@ module.exports = {
         }
       }
     } catch (error) {
+      console.log(error)
       return helper.response(response, 400, 'Failed register!')
     }
   },
@@ -93,6 +94,7 @@ module.exports = {
         return helper.response(response, 400, "You haven't activated your account yet!")
       }
     } catch (error) {
+      console.log(error)
       return helper.response(response, 400, 'Bad Request!', error)
     }
   },
