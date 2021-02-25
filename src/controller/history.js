@@ -76,6 +76,7 @@ module.exports = {
         tax,
         shipping,
         payment_method,
+        history_deleted: 0,
         history_checked: 0,
         user_id,
         history_created_at: moment().format()
