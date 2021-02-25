@@ -323,6 +323,7 @@ module.exports = {
       const result = await postProduct(setData)
       return helper.response(response, 200, 'Success Post Product', result)
     } catch (error) {
+      console.log(error)
       return helper.response(response, 400, 'Bad Request', error)
     }
   },
