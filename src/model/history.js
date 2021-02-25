@@ -13,7 +13,7 @@ module.exports = {
   },
   getHistoryByIdUser: (user_id) => {
     return new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM history WHERE history_deleted=0 AND user_id=${user_id}`, (error, result) => {
+      connection.query(`SELECT * FROM history WHERE history_deleted=NULL AND user_id=${user_id}`, (error, result) => {
         if (!error) {
           resolve(result)
         } else {
@@ -24,7 +24,7 @@ module.exports = {
   },
   getHistoryUserById: (user_id, id) => {
     return new Promise((resolve, reject) => {
-      connection.query(`SELECT * FROM history WHERE history_deleted=0 AND user_id=${user_id} AND history_id=${id}`, (error, result) => {
+      connection.query(`SELECT * FROM history WHERE history_deleted=NULL AND user_id=${user_id} AND history_id=${id}`, (error, result) => {
         if (!error) {
           resolve(result)
         } else {
